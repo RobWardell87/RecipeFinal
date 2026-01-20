@@ -124,7 +124,10 @@ async function getRecipeDetails(id) {
        const response = await fetch(`${LOOKUP_API_URL}${id}`) 
        if (!response.ok) throw new Error("Failed to fetch recipe details.")
        const data = await response.json()
-       if (data.meals && data.meals > 0) {
+
+       console.log("details: ", data)
+
+       if (data.meals && data.meals.length > 0) {
         displayRecipeDetails(data.meals[0])
        }
        else {
@@ -152,7 +155,7 @@ function displayRecipeDetails(recipe) {
         const measure = recipe[`strMeasure${i}`]?.trim()
 
         if (ingredient) {
-            ingredients.push(`<li>${measure ? `${measure}` : ""}${ingredient}</li>`)
+            ingredient.push(`<li>${measure ? `${measure}` : ""}${ingredient}</li>`)
         }
         else {
          break;   
