@@ -1,72 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RecipeFinal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    
-</head>
 
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
     <div class="recipe__finder--container">
-        <h1>Recipe Finder</h1>
-        <form id="search__form" class="search__box">
-            <input type="text" id="search__input" placeholder="Search by ingredient">
-            <button type="submit" id="search__button">Search</button>
-        </form>
+      <h1>Recipe Finder</h1>
 
-    <div class="random__button--container">
-        <button id="random__button" class="random__button">Get Random Recipe</button>
+      <form id="search__form" class="search__box">
+        <input
+          type="text"
+          id="search__input"
+          placeholder="Search by ingredient"
+        />
+        <button type="submit" id="search__button">Search</button>
+      </form>
+
+      <div class="random__button--container">
+        <button id="random__button" class="random__button">
+          Get Random Recipe
+        </button>
+      </div>
+
+      <div class="message" id="message__area">
+        Search for a recipe or get a random one.
+        <br />
+        You can even search alphabetically below.
+      </div>
+
+      <div class="results__wrapper">
+        <div class="results__grid" id="results__grid"></div>
+      </div>
     </div>
-    <div class="message" id="message__area">Search for a recipe or get a random one!</div>
-    <div class="results__grid" id="results__grid">
-        <!-- <div class="recipe__item">
-            <img src="https://www.themealdb.com/images/media/meals/vrspxv1511722107.jpg" alt="Carrot Cake">
-            <h3>Carrot Cake</h3>
-        </div> -->
-    </div>
-    </div>
+
     <div class="modal__container hidden" id="recipe__modal">
-        <div class="modal__content">
-            <button id="modal__close--btn" class="modal__close--btn">+</button>
-            <div id="recipe__details--content">
-
-                <!-- Details will be loaded here -->
-
-                <!-- <h2>Carrot Cake</h2>
-                <img src="https://www.themealdb.com/images/media/meals/vrspxv1511722107.jpg" alt="Carrot Cake">
-                <h3>Category: Dessert</h3>
-                <h3>Category: Dessert</h3>
-                <h3>Category: Dessert</h3>
-
-                <ul>
-                    <li>450ml Vegetable Oil</li>
-                    <li>400g Plain Flour</li>
-                </ul>
-                <h3>Instructions</h3>
-                <p>For the carrot cake, preheat the oven to 160C/325F/Gas 3.
-                Grease and line a 26cm/10in springform cake tin.
-                Mix all of the ingredients for the carrot cake, except the carrots and walnuts, together in a bowl until well combined.
-                Stir in the carrots and walnuts.
-                Spoon the mixture into the cake tin and bake for 1 hour 15 minutes, or until a skewer inserted into the middle comes out clean.
-                Remove the cake from the oven and set aside to cool for 10 minutes, then carefully remove the cake from the tin and set aside to cool completely on a cooling rack.
-                Meanwhile, for the icing, beat the cream cheese, caster sugar and butter together in a bowl until fluffy.
-                Spread the icing over the top of the cake with a palette knife.
-                </p>
-                <h3>Video Recipe</h3>
-                <div class="video__wrapper">
-                    <a href="https://www.youtube.com/watch?v=asjZ7iTrGKA" target="_blank">Watch on YouTube</a>
-                </div>
-                <div class="source__wrapper">
-                    <a href="#" target="_blank">View Origianl Source</a>
-                </div> -->
-            </div>
-        </div>
+      <div class="modal__content">
+        <button id="modal__close--btn" class="modal__close--btn">+</button>
+        <div id="recipe__details--content"></div>
+      </div>
     </div>
+
+    <footer class="site__footer">
+      <div class="footer__content">
+        <img class="personal__logo" src="./IMG_2074 (1).JPG" alt="" />
+
+        <div class="footer__main">
+          <div class="alphabet__filter" id="alphabet__filter">
+            <button data-letter="A">A</button>
+            <button data-letter="B">B</button>
+            <button data-letter="C">C</button>
+            <button data-letter="D">D</button>
+            <button data-letter="E">E</button>
+            <button data-letter="F">F</button>
+            <button data-letter="G">G</button>
+            <button data-letter="H">H</button>
+            <button data-letter="I">I</button>
+            <button data-letter="J">J</button>
+            <button data-letter="K">K</button>
+            <button data-letter="L">L</button>
+            <button data-letter="M">M</button>
+            <button data-letter="N">N</button>
+            <button data-letter="O">O</button>
+            <button data-letter="P">P</button>
+            <button data-letter="Q">Q</button>
+            <button data-letter="R">R</button>
+            <button data-letter="S">S</button>
+            <button data-letter="T">T</button>
+            <button data-letter="U">U</button>
+            <button data-letter="V">V</button>
+            <button data-letter="W">W</button>
+            <button data-letter="X">X</button>
+            <button data-letter="Y">Y</button>
+            <button data-letter="Z">Z</button>
+          </div>
+
+          <p>Recipe Finder &copy; 2026</p>
+          <p>Built with HTML, CSS &amp; JavaScript By Rob Wardell</p>
+        </div>
+      </div>
+    </footer>
+
     <script src="index.js"></script>
-</body>
+  </body>
 </html>
