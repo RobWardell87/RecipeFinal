@@ -10,9 +10,12 @@ const resultsGrid = document.getElementById("results__grid");
 const messageArea = document.getElementById("message__area");
 const alphabetFilter = document.getElementById("alphabet__filter");
 const randomButton = document.getElementById("random__button");
+const sortButton = document.getElementById("sort__button");
 const modal = document.getElementById("recipe__modal");
 const modalContent = document.getElementById("recipe__details--content");
 const modalCloseBtn = document.getElementById("modal__close--btn");
+let currentRecipes = []; // keeps whatever is currently displayed
+
 
 function showMessage(message, isError = false, isLoading = false) {
   messageArea.textContent = message;
@@ -26,19 +29,26 @@ function clearMessage() {
   messageArea.className = "message";
 }
 
+/* RENDER + SORT */
 function displayRecipes(recipes) {
   resultsGrid.innerHTML = "";
 
   if (!recipes || recipes.length === 0) {
     showMessage("No recipes to display");
+    currentRecipes = [];
     return;
   }
 
-  const sortedRecipes = [...recipes].sort((a, b) =>
-    a.strMeal.localeCompare(b.strMeal),
-  );
+  // store copy of current results
+  currentRecipes = [...recipes];
 
-  sortedRecipes.forEach((recipe) => {
+  // default: show in the order given (API or caller can decide)
+  // if you want them always sorted by default, uncomment next lines:
+  // currentRecipes.sort((a, b) =>
+  //   a.strMeal.localeCompare(b.strMeal)
+  // );
+
+  currentRecipes.forEach((recipe) => {
     const recipeDiv = document.createElement("div");
     recipeDiv.classList.add("recipe__item");
     recipeDiv.dataset.id = recipe.idMeal;
@@ -50,6 +60,8 @@ function displayRecipes(recipes) {
   });
 }
 
+
+/* SEARCH */
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const searchTerm = searchInput.value.trim();
@@ -86,6 +98,7 @@ async function searchRecipes(query) {
   }
 }
 
+/* RANDOM */
 randomButton.addEventListener("click", getRandomRecipe);
 
 async function getRandomRecipe() {
@@ -100,18 +113,35 @@ async function getRandomRecipe() {
     clearMessage();
 
     if (data.meals && data.meals.length > 0) {
-      displayRecipes(data.meals);
+      displayRecipes(data.meals); // single recipe still goes through sorter
     } else {
       showMessage("Could not fetch a random recipe. Please try again.", true);
     }
   } catch (error) {
     showMessage(
       "Failed to fetch a random recipe. Please check your connection and try again.",
-      true,
+      true
     );
   }
 }
 
+sortButton.addEventListener("click", () => {
+  if (!currentRecipes || currentRecipes.length === 0) {
+    showMessage("No results to sort yet – try searching or picking a letter first.");
+    return;
+  }
+
+  // create sorted copy
+  const sorted = [...currentRecipes].sort((a, b) =>
+    a.strMeal.localeCompare(b.strMeal)
+  );
+
+  showMessage("Results sorted A–Z.");
+  displayRecipes(sorted);
+});
+
+
+/* ALPHABET FILTER */
 alphabetFilter.addEventListener("click", (e) => {
   const btn = e.target.closest("button[data-letter]");
   if (!btn) return;
@@ -131,7 +161,7 @@ async function getRecipesByFirstLetter(letter) {
 
   try {
     const response = await fetch(
-      `${FIRST_LETTER_API_URL}${letter.toLowerCase()}`,
+      `${FIRST_LETTER_API_URL}${letter.toLowerCase()}`
     );
     if (!response.ok) throw new Error("Network error");
 
@@ -139,7 +169,9 @@ async function getRecipesByFirstLetter(letter) {
     clearMessage();
 
     if (data.meals) {
-      displayRecipes(data.meals);
+      // NEW: SHUFFLE for RANDOM order (until Sort A-Z is clicked)
+      const shuffledRecipes = [...data.meals].sort(() => Math.random() - 0.5);
+      displayRecipes(shuffledRecipes);
     } else {
       showMessage(`No recipes found starting with "${letter}".`);
     }
@@ -148,6 +180,8 @@ async function getRecipesByFirstLetter(letter) {
   }
 }
 
+
+/* MODAL */
 function showModal() {
   modal.classList.remove("hidden");
   document.body.style.overflow = "hidden";
@@ -166,6 +200,7 @@ modal.addEventListener("click", (e) => {
   }
 });
 
+/* CLICK CARD -> DETAILS */
 resultsGrid.addEventListener("click", (e) => {
   const card = e.target.closest(".recipe__item");
   if (card) {
@@ -181,7 +216,8 @@ async function getRecipeDetails(id) {
     return;
   }
 
-  modalContent.innerHTML = '<p class="message loading">Loading details...</p>';
+  modalContent.innerHTML =
+    '<p class="message loading">Loading details...</p>';
   showModal();
 
   try {
@@ -247,3 +283,4 @@ function displayRecipeDetails(recipe) {
     ${sourceHTML}
   `;
 }
+
